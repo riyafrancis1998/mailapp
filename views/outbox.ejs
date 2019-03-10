@@ -1,0 +1,332 @@
+<html lang=en>
+
+<head>
+  <title>Mailapp</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="public/css/style.css">
+</head>
+
+<body class="bg-image">
+<div class="container-fluid">  
+  
+</div>
+  <div class="container-fluid">
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="table-responsive">
+          <form method="POST" action="/send">
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <input type="hidden" name="password" value=<%=result[result.length-3] %>>
+                  <input type="hidden" name="email" value=<%=result[result.length-4] %>>
+                  <textarea style="display:none" rows="4" cols="50" name="sender"><%=result[result.length-2]%></textarea>
+                  <td>Subject:<input type='text' id="sub" name="subject"></td>
+                </tr>
+                <tr>
+                <tr>
+                  <td>Text:<input name="text" id="text"></td>
+                </tr>
+                <tr>
+                  <td>
+
+                    <textarea rows="4" cols="50" name="message" id="message">Enter your message:</textarea></td>
+                </tr>
+              </tbody>
+
+
+            </table>
+            <button>Send</button>
+
+
+          </form>
+          <form method="POST" action="/senddraft">
+            <button style="display: none" id="click"></button>
+            <input type="hidden" name="password" value=<%=result[result.length-3] %>>
+            <input type="hidden" name="email" value=<%=result[result.length-4] %>>
+            <textarea style="display:none" rows="4" cols="50" name="fromsender"><%=result[0].fromsender%></textarea>
+            <input type="hidden" name="toreceiver" value=<%=result[0].toreceiver %>>
+            <textarea style="display:none" rows="4" cols="50" name="sender"><%=result[result.length-2]%></textarea>
+            <input type="hidden" name="subject" id="sub1">
+            <input type="hidden" name="text" id="text1">
+            <textarea style="display:none" type="hidden" rows="4" cols="50" name="message" id="message1">Enter your message:</textarea>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div id="myModal1" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close1">&times;</span>
+        <span>From:<p style="margin:0;display:inline" id="a"></p>
+          <p style="margin:0;display:inline" id="b"></p>
+        </span>
+        <span>To:<p style="margin:0;display:inline" id="c"></p></span>
+        <span>Subject:<p style="margin:0;display:inline" id="d"></p></span>
+        <span>Title:<p style="margin:0;display:inline" id="e"></p></span>
+        Message:<p style="margin:0;display:inline" id="f"></p>
+        <span>Date:<p style="margin:0;display:inline" id="g"></p></span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row rowStyle">
+    <div class="col-lg-3" id="nav">
+      <div class="nav-side-menu">
+      <div class="brand">Mail App</div>
+      <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+  
+      <div class="menu-list">
+  
+        <ul id="menu-content" class="menu-content collapse out">
+          <li>
+            <a class="link" id="myBtn"><i class="fa fa-fw fa-envelope"></i> Compose</a>
+          </li>
+          <li>
+              <form method="POST" action="/sent">
+                <input type="hidden" name="password" value=<%=result[result.length-3] %>>
+                <input type="hidden" name="email" value=<%=result[result.length-4] %>>
+                <button id="button" type="submit" class="link" onclick="this.form.submit()"><i class="fa fa-fw fa-user"></i> Send</button>
+              </form>
+            </li>
+            <li>
+              <form method="POST" action="/draft">
+                <input type="hidden" name="password" value=<%=result[result.length-3] %>>
+                <input type="hidden" name="email" value=<%=result[result.length-4] %>>
+                <button  id="button" type="submit" class="link" onclick="this.form.submit()"><i class="fa fa-fw fa-user"></i>Draft</button>
+              </form>
+            </li>
+            <li>
+              <form method="POST" action="/outbox">
+                <input type="hidden" name="password" value=<%=result[result.length-3] %>>
+                <input type="hidden" name="email" value=<%=result[result.length-4] %>>
+                <button  id="button" type="submit" class="link" onclick="this.form.submit()"><i class="fa fa-fw fa-envelope"></i>Outbox</button>
+              </form>
+            </li>
+        </ul>
+      </div>
+    </div>
+    </div>
+    <div class="col-lg-9 col-md-9 col-sm-12 col-fix">
+      <div class="tab-content">
+        <% if (result[result.length-1]=='sent'){ %>
+
+        <div id="sent" class="container tab-pane active" value="sent">
+          <div class="bg ">SENT MESSAGES</div>
+          <table class="table">
+            <tr class="abc">
+              <ul class="pagination justify-content-end">
+                <li class="page-item"><span>1-50 of 234</span></li>
+                <li class="page-item">
+                  <a class="btn" href="#"><i class="fa fa-angle-left  pagination-left"></i></a>
+                </li>
+                <li class="page-item">
+                  <a class="btn" href="#"><i class="fa fa-angle-right pagination-right"></i></a>
+                </li>
+              </ul>
+            </tr>
+
+            <% for(var i=0;i< result.length-4;i++) {  %>
+
+            <!-- <img src="{{image}}" width="4%" height="4%" > -->
+
+            <!-- <img src="{{image}}" width="4%" height="4%" > -->
+            <tr>
+              <td>
+                <button class="button1" id="myBtn1" onclick="show('<%=result[i].sendername%>',
+                                                  '<%=result[i].emailsender %>','<%=result[i].toreceiver %>','<%=result[i].subject %>','<%=result[i].text %>','<%=result[i].Messages %>','<%=result[i].date %>');">
+                  <span class="position"><input type="checkbox" class="mail-checkbox">&nbsp
+                    <%=result[i].sendername%></span>
+                  <span class="position1"><i class="fa fa-star inbox-started"></i>
+                    <%=result[i].subject %><span>&nbsp&nbsp
+                      <%=result[i].text %></span></span>
+                  <span class="position3">
+                    <%=result[i].date %></span>
+                </button>
+              </td>
+            </tr>
+
+            <% } %>
+
+
+
+          </table>
+        </div>
+        <% }else if(result[result.length-1]=='draft'){ %>
+        <div id="draft" class="container tab-pane active" value="draft">
+          <div class="bg ">DRAFT MESSAGES</div>
+          
+          <table class="table">
+            <tr class="abc">
+              <ul class="pagination justify-content-end">
+                <li class="page-item"><span>1-50 of 234</span></li>
+                <li class="page-item">
+                  <a class="btn" href="#"><i class="fa fa-angle-left  pagination-left"></i></a>
+                </li>
+                <li class="page-item">
+                  <a class="btn" href="#"><i class="fa fa-angle-right pagination-right"></i></a>
+                </li>
+              </ul>
+            </tr>
+
+            <% for(var i=0;i< result.length-4;i++) {  %>
+
+            <!-- <img src="{{image}}" width="4%" height="4%" > -->
+            <tr>
+              <td>
+                <button class="button1" id="myBtn1" onclick="show('<%=result[i].sendername%>',
+                                                  '<%=result[i].emailsender %>','<%=result[i].toreceiver %>','<%=result[i].subject %>','<%=result[i].text %>','<%=result[i].Messages %>','<%=result[i].date %>');">
+                  <span class="position"><input type="checkbox" class="mail-checkbox">&nbsp
+                    <%=result[i].sendername%></span>
+                  <span class="position1"><i class="fa fa-star inbox-started"></i>
+                    <%=result[i].subject %><span>&nbsp&nbsp
+                      <%=result[i].text %></span></span>
+                  <span class="position3">
+                    <%=result[i].date %></span>
+                </button>
+              </td>
+            </tr>
+
+
+
+
+            <% } %>
+          </table>
+        </div>
+
+
+        <% }else{ %>
+        <div id="sent" class="container tab-pane active" value="sent">
+          <div class="bg ">OUTBOX</div>
+          <br>
+          <table class="table">
+            <tr class="abc">
+              <ul class="pagination justify-content-end">
+                <li class="page-item"><span>1-50 of 234</span></li>
+                <li class="page-item">
+                  <a class="btn" href="#"><i class="fa fa-angle-left  pagination-left"></i></a>
+                </li>
+                <li class="page-item">
+                  <a class="btn" href="#"><i class="fa fa-angle-right pagination-right"></i></a>
+                </li>
+              </ul>
+            </tr>
+
+            <% for(var i=0;i< result.length-4;i++) {  %>
+
+            <!-- <img src="{{image}}" width="4%" height="4%" > -->
+            <tr>
+              <td>
+                <button class="button1" id="myBtn1" onclick="show('<%=result[i].sendername%>',
+                                                '<%=result[i].emailsender %>','<%=result[i].toreceiver %>','<%=result[i].subject %>','<%=result[i].text %>','<%=result[i].Messages %>','<%=result[i].date %>');">
+                  <span class="position"><input type="checkbox" class="mail-checkbox">&nbsp
+                    <%=result[i].sendername%></span>
+                  <span class="position1"><i class="fa fa-star inbox-started"></i>
+                    <%=result[i].subject %><span>&nbsp&nbsp
+                      <%=result[i].text %></span></span>
+                  <span class="position3">
+                    <%=result[i].date %></span>
+                </button>
+              </td>
+            </tr>
+            <% } %>
+
+          </table>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+
+
+
+
+
+  <script>
+    var modal = document.getElementById('myModal');
+    var modal1 = document.getElementById('myModal1');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+    var btn1 = document.getElementById("myBtn1");
+    var p = document.getElementById("a");
+    var p1 = document.getElementById("b");
+    var p2 = document.getElementById("c");
+    var p3 = document.getElementById("d");
+    var p4 = document.getElementById("e");
+    var p5 = document.getElementById("f");
+    var p6 = document.getElementById("g")
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    var span1 = document.getElementsByClassName("close1")[0];
+
+    // When the user clicks the button, open the modal 
+    btn.onclick = function () {
+      console.log("Clicked");
+      modal.style.display = "block";
+    }
+
+    function show(a, b, c, d, e, f, g) {
+      console.log("Clicked");
+      modal1.style.display = "block";
+
+      p.innerHTML = a;
+      p1.innerHTML = b;
+      p2.innerHTML = c;
+      p3.innerHTML = d;
+      p4.innerHTML = e;
+      p5.innerHTML = f;
+      p6.innerHTML = g;
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
+    span1.onclick = function () {
+      modal1.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+        var p = document.getElementById("sub").value;
+        document.getElementById("sub1").value = p;
+        var q = document.getElementById("text").value;
+        document.getElementById("text1").value = q;
+        var r = document.getElementById("message").value;
+        document.getElementById("message1").value = r
+        document.getElementById("click").click();
+      }
+      if (event.target == modal1) {
+        modal1.style.display = "none";
+      }
+
+    }
+  </script>
+
+
+</body>
+
+</html>

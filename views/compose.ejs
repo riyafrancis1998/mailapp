@@ -1,0 +1,22 @@
+<form method="POST" action="send">
+    <input type="text" name="recipient">
+    <input type="hidden" name="email" value=<%= %> >
+    <button>Send</button>
+</form>
+
+
+<% for(var i=0;i< result.length-3;i++) {  %>
+    <div class="panel panel-default">
+              <div class="panel-body">
+              <!-- <img src="{{image}}" width="4%" height="4%" > -->
+              <p>
+              <span class="glyphicon glyphicon-envelope"></span>
+              &nbsp&nbspfrom:<%=result[i].fromsender %></p>
+              <p>&nbsp&nbsp&nbsp&nbsp&nbsp to:<%=result[i].toreceiver %></p>
+              <p>&nbsp&nbsp&nbsp&nbsp&nbsp <span class="font-weight-bold">subject:<%=result[i].subject %></span></p>
+              <p>&nbsp&nbsp&nbsp&nbsp&nbsp date:<%=result[i].date %></p>
+              <p>&nbsp&nbsp&nbsp&nbsp&nbsp text:<%=result[i].text %></p>
+              <button>Forward</button>
+            </div>
+      </div>
+    <% } %> 
